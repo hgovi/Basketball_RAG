@@ -1,0 +1,22 @@
+[
+  {
+    "timestamp": "2025-04-07T19:06:54.569065",
+    "query": "What are the team's average points per game?"
+  },
+  {
+    "timestamp": "2025-04-07T19:06:54.571067",
+    "query": "What happened in the game against USC?"
+  },
+  {
+    "timestamp": "2025-04-07T19:06:54.574208",
+    "query": "Show me the statistics for the game against Stanford"
+  },
+  {
+    "timestamp": "2025-04-07T19:06:54.592485",
+    "query": "What was the team's performance in the last game?"
+  },
+  {
+    "timestamp": "2025-04-07T19:06:55.745046",
+    "query": "How many assists did the team have in total?"
+  }
+]
