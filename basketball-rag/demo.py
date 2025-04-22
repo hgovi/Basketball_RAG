@@ -1,45 +1,102 @@
-from basketball_rag import BasketballRAG
+"""
+Demo script for Basketball RAG system
+
+This script demonstrates the basic functionality of the enhanced
+basketball RAG system from the command line.
+"""
+
 import os
+import argparse
+from dotenv import load_dotenv
+from basketball_rag import BasketballRAG
 
 def main():
-    # Initialize the RAG system with your OpenAI API key
-    api_key = "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"
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='Basketball RAG System Demo')
+    parser.add_argument('--structured-data', type=str, default='data/structured/ucla_stats.csv',
+                        help='Path to structured data file (CSV or Excel)')
+    parser.add_argument('--unstructured-data', type=str, default='data/unstructured/game_summaries.txt',
+                        help='Path to unstructured data file (text)')
+    parser.add_argument('--interactive', action='store_true',
+                        help='Run in interactive mode')
+    args = parser.parse_args()
+    
+    # Load environment variables
+    load_dotenv()
+    
+    # Get API key
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise ValueError("OpenAI API key is required. Set OPENAI_API_KEY environment variable.")
+    
+    # Initialize the RAG system
+    print("\nInitializing OKC Thunder Basketball RAG System...")
     rag = BasketballRAG(openai_api_key=api_key)
     
-    # Load sample data
-    structured_data_path = "data/structured/ucla_stats.csv"
-    unstructured_data_path = "data/unstructured/game_summaries.txt"
+    # Load data
+    print(f"\nLoading structured data from {args.structured_data}...")
+    rag.load_structured_data(args.structured_data)
     
-    # Load structured data
-    rag.load_structured_data(structured_data_path)
-    
-    # Load unstructured data
-    with open(unstructured_data_path, 'r') as f:
+    print(f"\nLoading unstructured data from {args.unstructured_data}...")
+    with open(args.unstructured_data, 'r', encoding='utf-8') as f:
         game_summaries = f.read()
     rag.load_unstructured_data(game_summaries)
     
+    # Display success message
+    print("\nData loaded successfully!")
+    
     # Sample queries
-    queries = [
+    sample_queries = [
         "What are the team's average points per game?",
-        "What happened in the game against USC?",
-        "Show me the statistics for the game against Stanford",
-        "What was the team's performance in the last game?",
-        "How many assists did the team have in total?"
+        "What happened in the game against Boston?",
+        "Show me the statistics for Gordon Hayward",
+        "What was Gordon Hayward's performance on April 3rd?",
+        "How many assists did Shai Gilgeous-Alexander have in total?"
     ]
     
-    # Process and display answers
-    print("\nUCLA Women's Basketball RAG System Demo")
-    print("=" * 50)
-    
-    for query in queries:
-        print(f"\nQuery: {query}")
+    if args.interactive:
+        # Interactive mode
+        print("\n\nOKC Thunder Basketball RAG System - Interactive Mode")
+        print("=" * 50)
+        print("Type your questions or 'quit' to exit.")
         print("-" * 50)
-        answer = rag.answer_query(query)
-        print(f"Answer: {answer}")
+        
+        while True:
+            query = input("\n> ")
+            if query.lower() in ['quit', 'exit', 'q']:
+                break
+                
+            print("\nProcessing query...")
+            answer, tokens = rag.answer_query(query)
+            
+            print("\n" + "=" * 50)
+            print(f"Answer: {answer}")
+            print("-" * 50)
+            print(f"Tokens used: {tokens}")
+            print("=" * 50)
+    else:
+        # Demo mode with sample queries
+        print("\n\nOKC Thunder Basketball RAG System Demo")
+        print("=" * 50)
+        
+        total_tokens = 0
+        for i, query in enumerate(sample_queries, 1):
+            print(f"\nQuery {i}: {query}")
+            print("-" * 50)
+            
+            answer, tokens = rag.answer_query(query)
+            total_tokens += tokens
+            
+            print(f"Answer: {answer}")
+            print(f"Tokens used: {tokens}")
+            print("-" * 50)
+        
+        print(f"\nTotal tokens used: {total_tokens}")
     
     # Save query history
     rag.save_query_history()
     print("\nQuery history has been saved to query_history.json")
+    print("\nDemo completed!")
 
 if __name__ == "__main__":
-    main() 
+    main()

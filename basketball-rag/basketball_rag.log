@@ -86,3 +86,439 @@
 2025-04-07 19:47:11,209 - INFO - Successfully loaded 1 unstructured documents
 2025-04-07 19:47:11,218 - WARNING -  * Debugger is active!
 2025-04-07 19:47:11,231 - INFO -  * Debugger PIN: 926-605-306
+2025-04-14 18:39:48,072 - INFO - BasketballRAG system initialized
+2025-04-14 18:39:48,080 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:39:48,085 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:39:48,113 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-14 18:39:48,113 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 18:39:48,144 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 18:39:50,699 - INFO - BasketballRAG system initialized
+2025-04-14 18:39:50,706 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:39:50,708 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:39:50,718 - WARNING -  * Debugger is active!
+2025-04-14 18:39:50,739 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 18:41:36,461 - INFO - BasketballRAG system initialized
+2025-04-14 18:41:36,468 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:41:36,471 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:41:36,483 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-14 18:41:36,483 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 18:41:36,492 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 18:41:38,501 - INFO - BasketballRAG system initialized
+2025-04-14 18:41:38,508 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:41:38,511 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:41:38,521 - WARNING -  * Debugger is active!
+2025-04-14 18:41:38,536 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 18:44:58,779 - INFO - 127.0.0.1 - - [14/Apr/2025 18:44:58] "GET / HTTP/1.1" 200 -
+2025-04-14 18:44:58,811 - INFO - 127.0.0.1 - - [14/Apr/2025 18:44:58] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-04-14 18:44:58,958 - INFO - 127.0.0.1 - - [14/Apr/2025 18:44:58] "GET /history HTTP/1.1" 200 -
+2025-04-14 18:44:58,971 - INFO - 127.0.0.1 - - [14/Apr/2025 18:44:58] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-14 18:44:58,990 - INFO - 127.0.0.1 - - [14/Apr/2025 18:44:58] "[35m[1mGET /stats HTTP/1.1[0m" 500 -
+2025-04-14 18:46:12,184 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 401 Unauthorized"
+2025-04-14 18:46:12,194 - ERROR - Error processing unstructured query: Error code: 401 - {'error': {'message': 'Incorrect API key provided: sk-proj-********************************************************************************************************************************************************3HEA. You can find your API key at https://platform.openai.com/account/api-keys.', 'type': 'invalid_request_error', 'param': None, 'code': 'invalid_api_key'}}
+2025-04-14 18:46:12,195 - INFO - 127.0.0.1 - - [14/Apr/2025 18:46:12] "POST /query HTTP/1.1" 200 -
+2025-04-14 18:46:12,200 - INFO - 127.0.0.1 - - [14/Apr/2025 18:46:12] "GET /history HTTP/1.1" 200 -
+2025-04-14 18:46:12,215 - INFO - 127.0.0.1 - - [14/Apr/2025 18:46:12] "[35m[1mGET /stats HTTP/1.1[0m" 500 -
+2025-04-14 18:51:04,345 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/app.py', reloading
+2025-04-14 18:51:04,346 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/app.py', reloading
+2025-04-14 18:51:05,697 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 18:51:10,344 - INFO - BasketballRAG system initialized
+2025-04-14 18:51:10,353 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:51:10,358 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:51:10,379 - WARNING -  * Debugger is active!
+2025-04-14 18:51:10,403 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 18:54:04,469 - INFO - BasketballRAG system initialized
+2025-04-14 18:54:04,477 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:54:04,480 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:54:04,502 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-14 18:54:04,502 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 18:54:04,517 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 18:54:06,561 - INFO - BasketballRAG system initialized
+2025-04-14 18:54:06,567 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:54:06,570 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:54:06,579 - WARNING -  * Debugger is active!
+2025-04-14 18:54:06,596 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 18:54:20,222 - INFO - 127.0.0.1 - - [14/Apr/2025 18:54:20] "GET / HTTP/1.1" 200 -
+2025-04-14 18:54:20,250 - INFO - 127.0.0.1 - - [14/Apr/2025 18:54:20] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-04-14 18:54:20,293 - INFO - 127.0.0.1 - - [14/Apr/2025 18:54:20] "GET /history HTTP/1.1" 200 -
+2025-04-14 18:54:20,317 - INFO - 127.0.0.1 - - [14/Apr/2025 18:54:20] "[35m[1mGET /stats HTTP/1.1[0m" 500 -
+2025-04-14 18:54:27,350 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-14 18:54:27,363 - INFO - 127.0.0.1 - - [14/Apr/2025 18:54:27] "POST /query HTTP/1.1" 200 -
+2025-04-14 18:54:27,368 - INFO - 127.0.0.1 - - [14/Apr/2025 18:54:27] "GET /history HTTP/1.1" 200 -
+2025-04-14 18:54:27,382 - INFO - 127.0.0.1 - - [14/Apr/2025 18:54:27] "[35m[1mGET /stats HTTP/1.1[0m" 500 -
+2025-04-14 18:56:48,256 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/basketball_rag.py', reloading
+2025-04-14 18:56:48,710 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 18:56:52,891 - INFO - BasketballRAG system initialized
+2025-04-14 18:56:52,899 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:56:52,903 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:56:52,919 - WARNING -  * Debugger is active!
+2025-04-14 18:56:52,936 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 18:56:55,174 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/basketball_rag.py', reloading
+2025-04-14 18:56:56,456 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 18:56:59,823 - INFO - BasketballRAG system initialized
+2025-04-14 18:56:59,832 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:56:59,835 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:56:59,849 - WARNING -  * Debugger is active!
+2025-04-14 18:56:59,865 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 18:57:13,234 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/basketball_rag.py', reloading
+2025-04-14 18:57:13,255 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/basketball_rag.py', reloading
+2025-04-14 18:57:14,280 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 18:57:16,770 - INFO - BasketballRAG system initialized
+2025-04-14 18:57:16,777 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:57:16,779 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:57:16,792 - WARNING -  * Debugger is active!
+2025-04-14 18:57:16,808 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 18:57:23,850 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/app.py', reloading
+2025-04-14 18:57:24,261 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 18:57:27,128 - INFO - BasketballRAG system initialized
+2025-04-14 18:57:27,137 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:57:27,141 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:57:27,153 - WARNING -  * Debugger is active!
+2025-04-14 18:57:27,169 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 18:57:44,611 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/basketball_rag.py', reloading
+2025-04-14 18:57:45,603 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 18:57:48,277 - INFO - BasketballRAG system initialized
+2025-04-14 18:57:48,286 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 18:57:48,288 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 18:57:48,300 - WARNING -  * Debugger is active!
+2025-04-14 18:57:48,318 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:00:49,044 - INFO - BasketballRAG system initialized
+2025-04-14 19:00:49,064 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:00:49,073 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:00:49,097 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-04-14 19:00:49,097 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 19:00:49,114 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:00:51,814 - INFO - BasketballRAG system initialized
+2025-04-14 19:00:51,820 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:00:51,823 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:00:51,832 - WARNING -  * Debugger is active!
+2025-04-14 19:00:51,848 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:01:03,942 - INFO - 127.0.0.1 - - [14/Apr/2025 19:01:03] "GET / HTTP/1.1" 200 -
+2025-04-14 19:01:03,989 - INFO - 127.0.0.1 - - [14/Apr/2025 19:01:03] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-04-14 19:01:04,033 - INFO - 127.0.0.1 - - [14/Apr/2025 19:01:04] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:01:04,059 - INFO - 127.0.0.1 - - [14/Apr/2025 19:01:04] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:01:08,721 - INFO - 127.0.0.1 - - [14/Apr/2025 19:01:08] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:01:08,798 - INFO - 127.0.0.1 - - [14/Apr/2025 19:01:08] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:01:08,809 - INFO - 127.0.0.1 - - [14/Apr/2025 19:01:08] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:05:27,280 - INFO - 127.0.0.1 - - [14/Apr/2025 19:05:27] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:05:27,421 - INFO - 127.0.0.1 - - [14/Apr/2025 19:05:27] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:05:27,444 - INFO - 127.0.0.1 - - [14/Apr/2025 19:05:27] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:06:02,936 - INFO - BasketballRAG system initialized
+2025-04-14 19:06:02,947 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:06:02,951 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:06:12,090 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/app.py', reloading
+2025-04-14 19:06:12,736 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:06:15,301 - INFO - BasketballRAG system initialized
+2025-04-14 19:06:15,307 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:06:15,310 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:06:15,320 - WARNING -  * Debugger is active!
+2025-04-14 19:06:15,335 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:07:09,800 - INFO - BasketballRAG system initialized
+2025-04-14 19:07:09,805 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:07:09,808 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:07:09,820 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8080
+2025-04-14 19:07:09,820 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 19:07:09,832 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:07:12,194 - INFO - BasketballRAG system initialized
+2025-04-14 19:07:12,200 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:07:12,203 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:07:12,211 - WARNING -  * Debugger is active!
+2025-04-14 19:07:12,222 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:07:47,791 - INFO - 127.0.0.1 - - [14/Apr/2025 19:07:47] "GET / HTTP/1.1" 200 -
+2025-04-14 19:07:47,823 - INFO - 127.0.0.1 - - [14/Apr/2025 19:07:47] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-04-14 19:07:47,904 - INFO - 127.0.0.1 - - [14/Apr/2025 19:07:47] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:07:47,919 - INFO - 127.0.0.1 - - [14/Apr/2025 19:07:47] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-14 19:07:47,929 - INFO - 127.0.0.1 - - [14/Apr/2025 19:07:47] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:07:51,957 - INFO - 127.0.0.1 - - [14/Apr/2025 19:07:51] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:07:52,019 - INFO - 127.0.0.1 - - [14/Apr/2025 19:07:52] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:07:52,030 - INFO - 127.0.0.1 - - [14/Apr/2025 19:07:52] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:08:03,099 - INFO - 127.0.0.1 - - [14/Apr/2025 19:08:03] "GET /?vscodeBrowserReqId=1744682883092 HTTP/1.1" 200 -
+2025-04-14 19:08:03,180 - INFO - 127.0.0.1 - - [14/Apr/2025 19:08:03] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-04-14 19:08:03,367 - INFO - 127.0.0.1 - - [14/Apr/2025 19:08:03] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:08:03,380 - INFO - 127.0.0.1 - - [14/Apr/2025 19:08:03] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:08:16,173 - INFO - 127.0.0.1 - - [14/Apr/2025 19:08:16] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:08:16,241 - INFO - 127.0.0.1 - - [14/Apr/2025 19:08:16] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:08:16,254 - INFO - 127.0.0.1 - - [14/Apr/2025 19:08:16] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:08:51,032 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/app.py', reloading
+2025-04-14 19:08:51,032 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/app.py', reloading
+2025-04-14 19:08:51,524 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:08:52,117 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:08:55,132 - INFO - BasketballRAG system initialized
+2025-04-14 19:08:55,132 - INFO - BasketballRAG system initialized
+2025-04-14 19:08:55,138 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:08:55,139 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:08:55,141 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:08:55,142 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:08:55,156 - WARNING -  * Debugger is active!
+2025-04-14 19:08:55,156 - WARNING -  * Debugger is active!
+2025-04-14 19:08:55,171 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:08:55,171 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:08:56,104 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/app.py', reloading
+2025-04-14 19:08:56,104 - INFO -  * Detected change in '/Users/om/Desktop/basketball-rag/app.py', reloading
+2025-04-14 19:08:56,605 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:08:56,605 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:08:59,610 - INFO - BasketballRAG system initialized
+2025-04-14 19:08:59,610 - INFO - BasketballRAG system initialized
+2025-04-14 19:08:59,621 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:08:59,621 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:08:59,626 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:08:59,626 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:08:59,639 - WARNING -  * Debugger is active!
+2025-04-14 19:08:59,639 - WARNING -  * Debugger is active!
+2025-04-14 19:08:59,658 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:08:59,658 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:09:57,464 - INFO - BasketballRAG system initialized
+2025-04-14 19:09:57,473 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:09:57,476 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:09:57,503 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8080
+2025-04-14 19:09:57,503 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 19:09:57,523 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:09:59,938 - INFO - BasketballRAG system initialized
+2025-04-14 19:09:59,945 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:09:59,948 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:10:00,012 - WARNING -  * Debugger is active!
+2025-04-14 19:10:00,035 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:10:17,688 - INFO - 127.0.0.1 - - [14/Apr/2025 19:10:17] "GET /?vscodeBrowserReqId=1744683017674 HTTP/1.1" 200 -
+2025-04-14 19:10:17,782 - INFO - 127.0.0.1 - - [14/Apr/2025 19:10:17] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-04-14 19:10:17,834 - INFO - 127.0.0.1 - - [14/Apr/2025 19:10:17] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:10:17,851 - INFO - 127.0.0.1 - - [14/Apr/2025 19:10:17] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:10:58,079 - INFO - BasketballRAG system initialized
+2025-04-14 19:10:58,087 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:10:58,090 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:11:17,084 - INFO - BasketballRAG system initialized
+2025-04-14 19:11:17,093 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:11:17,096 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:12:04,244 - INFO - BasketballRAG system initialized
+2025-04-14 19:12:04,250 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:12:04,253 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:12:04,264 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8080
+2025-04-14 19:12:04,264 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 19:12:04,270 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:12:06,610 - INFO - BasketballRAG system initialized
+2025-04-14 19:12:06,620 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:12:06,623 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:12:06,635 - WARNING -  * Debugger is active!
+2025-04-14 19:12:06,655 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:13:46,424 - INFO - BasketballRAG system initialized
+2025-04-14 19:13:46,434 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:13:46,439 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:13:52,748 - INFO - 127.0.0.1 - - [14/Apr/2025 19:13:52] "GET / HTTP/1.1" 200 -
+2025-04-14 19:13:52,859 - INFO - 127.0.0.1 - - [14/Apr/2025 19:13:52] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-04-14 19:13:52,925 - INFO - 127.0.0.1 - - [14/Apr/2025 19:13:52] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:13:52,947 - INFO - 127.0.0.1 - - [14/Apr/2025 19:13:52] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:14:10,245 - INFO - 127.0.0.1 - - [14/Apr/2025 19:14:10] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:14:10,251 - INFO - 127.0.0.1 - - [14/Apr/2025 19:14:10] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:14:10,261 - INFO - 127.0.0.1 - - [14/Apr/2025 19:14:10] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:19:34,966 - INFO - BasketballRAG system initialized
+2025-04-14 19:19:34,983 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:19:34,993 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:19:35,017 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8080
+2025-04-14 19:19:35,017 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 19:19:35,031 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:19:37,960 - INFO - BasketballRAG system initialized
+2025-04-14 19:19:37,968 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:19:37,972 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:19:37,983 - WARNING -  * Debugger is active!
+2025-04-14 19:19:37,999 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:19:57,031 - INFO - 127.0.0.1 - - [14/Apr/2025 19:19:57] "GET / HTTP/1.1" 200 -
+2025-04-14 19:19:57,067 - INFO - 127.0.0.1 - - [14/Apr/2025 19:19:57] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-04-14 19:19:57,142 - INFO - 127.0.0.1 - - [14/Apr/2025 19:19:57] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:19:57,173 - INFO - 127.0.0.1 - - [14/Apr/2025 19:19:57] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:20:17,911 - ERROR - Error processing structured query: Can only use .str accessor with string values!
+2025-04-14 19:20:17,912 - INFO - 127.0.0.1 - - [14/Apr/2025 19:20:17] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:20:17,917 - INFO - 127.0.0.1 - - [14/Apr/2025 19:20:17] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:20:17,926 - INFO - 127.0.0.1 - - [14/Apr/2025 19:20:17] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:22:56,478 - INFO - BasketballRAG system initialized
+2025-04-14 19:22:56,489 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:22:56,493 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:22:56,509 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8080
+2025-04-14 19:22:56,509 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 19:22:56,518 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:22:59,388 - INFO - BasketballRAG system initialized
+2025-04-14 19:22:59,397 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:22:59,401 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:22:59,414 - WARNING -  * Debugger is active!
+2025-04-14 19:22:59,430 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:26:00,839 - INFO - BasketballRAG system initialized
+2025-04-14 19:26:00,847 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:26:00,850 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:29:50,043 - INFO - BasketballRAG system initialized
+2025-04-14 19:29:50,053 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:29:50,057 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:29:50,077 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8080
+2025-04-14 19:29:50,078 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 19:29:50,092 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:29:53,063 - INFO - BasketballRAG system initialized
+2025-04-14 19:29:53,072 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:29:53,076 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:29:53,088 - WARNING -  * Debugger is active!
+2025-04-14 19:29:53,105 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:31:57,908 - INFO - 127.0.0.1 - - [14/Apr/2025 19:31:57] "GET / HTTP/1.1" 200 -
+2025-04-14 19:31:57,941 - INFO - 127.0.0.1 - - [14/Apr/2025 19:31:57] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-04-14 19:31:58,014 - INFO - 127.0.0.1 - - [14/Apr/2025 19:31:58] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:31:58,039 - INFO - 127.0.0.1 - - [14/Apr/2025 19:31:58] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:32:04,029 - INFO - 127.0.0.1 - - [14/Apr/2025 19:32:04] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:32:04,035 - INFO - 127.0.0.1 - - [14/Apr/2025 19:32:04] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:32:04,050 - INFO - 127.0.0.1 - - [14/Apr/2025 19:32:04] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:33:25,852 - INFO - 127.0.0.1 - - [14/Apr/2025 19:33:25] "GET /?vscodeBrowserReqId=1744684405845 HTTP/1.1" 200 -
+2025-04-14 19:33:25,933 - INFO - 127.0.0.1 - - [14/Apr/2025 19:33:25] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-04-14 19:33:25,995 - INFO - 127.0.0.1 - - [14/Apr/2025 19:33:25] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:33:26,005 - INFO - 127.0.0.1 - - [14/Apr/2025 19:33:26] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:35:09,728 - INFO - 127.0.0.1 - - [14/Apr/2025 19:35:09] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:35:09,734 - INFO - 127.0.0.1 - - [14/Apr/2025 19:35:09] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:35:09,744 - INFO - 127.0.0.1 - - [14/Apr/2025 19:35:09] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:37:26,177 - INFO - BasketballRAG system initialized
+2025-04-14 19:37:26,183 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:37:26,186 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:37:26,206 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8080
+2025-04-14 19:37:26,206 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 19:37:26,217 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:37:29,175 - INFO - BasketballRAG system initialized
+2025-04-14 19:37:29,184 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:37:29,188 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:37:29,201 - WARNING -  * Debugger is active!
+2025-04-14 19:37:29,217 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:39:09,139 - INFO - 127.0.0.1 - - [14/Apr/2025 19:39:09] "GET / HTTP/1.1" 200 -
+2025-04-14 19:39:09,170 - INFO - 127.0.0.1 - - [14/Apr/2025 19:39:09] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-04-14 19:39:09,233 - INFO - 127.0.0.1 - - [14/Apr/2025 19:39:09] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:39:09,251 - INFO - 127.0.0.1 - - [14/Apr/2025 19:39:09] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:39:12,871 - INFO - Processing query: "What was Gordon Hayward's performance on April 3rd?"
+2025-04-14 19:39:12,872 - INFO - Detected specific query for Gordon Hayward on April 3rd
+2025-04-14 19:39:12,874 - INFO - Successfully processed Gordon Hayward April 3rd query with response: Gordon Hayward's performance on April 3rd, 2024 (OKC @ BOS):
+
+Points: 0
+Rebounds: 2
+Assists: 2
+Steals: 1
+Field Goals: 0/4 (0.0%)
+3-Pointers: 0/1
+Free Throws: 0/0
+Plus/Minus: -28
+
+2025-04-14 19:39:12,875 - INFO - Query processed successfully. Answer: Gordon Hayward's performance on April 3rd, 2024 (OKC @ BOS):
+
+Points: 0
+Rebounds: 2
+Assists: 2
+Steal...
+2025-04-14 19:39:12,875 - INFO - 127.0.0.1 - - [14/Apr/2025 19:39:12] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:39:12,881 - INFO - 127.0.0.1 - - [14/Apr/2025 19:39:12] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:39:12,892 - INFO - 127.0.0.1 - - [14/Apr/2025 19:39:12] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:40:57,109 - INFO - Processing query: give me bismack biyombo's cumulative season stats
+2025-04-14 19:40:57,161 - INFO - Query processed successfully. Answer:          Unnamed: 0        gameId        teamId      personId  jerseyNum  fieldGoalsMade  fieldGoals...
+2025-04-14 19:40:57,161 - INFO - 127.0.0.1 - - [14/Apr/2025 19:40:57] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:40:57,167 - INFO - 127.0.0.1 - - [14/Apr/2025 19:40:57] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:40:57,177 - INFO - 127.0.0.1 - - [14/Apr/2025 19:40:57] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:41:24,740 - INFO - Processing query: who did OKC play on april 3rd and who scored the most point on that day 
+2025-04-14 19:41:24,752 - INFO - Query processed successfully. Answer:       Unnamed: 0 season_year   game_date    gameId    matchup      teamId       teamCity teamName te...
+2025-04-14 19:41:24,753 - INFO - 127.0.0.1 - - [14/Apr/2025 19:41:24] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:41:24,759 - INFO - 127.0.0.1 - - [14/Apr/2025 19:41:24] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:41:24,768 - INFO - 127.0.0.1 - - [14/Apr/2025 19:41:24] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:41:33,826 - INFO - Processing query: "What was Gordon Hayward's performance on April 3rd?"
+2025-04-14 19:41:33,826 - INFO - Detected specific query for Gordon Hayward on April 3rd
+2025-04-14 19:41:33,828 - INFO - Successfully processed Gordon Hayward April 3rd query with response: Gordon Hayward's performance on April 3rd, 2024 (OKC @ BOS):
+
+Points: 0
+Rebounds: 2
+Assists: 2
+Steals: 1
+Field Goals: 0/4 (0.0%)
+3-Pointers: 0/1
+Free Throws: 0/0
+Plus/Minus: -28
+
+2025-04-14 19:41:33,828 - INFO - Query processed successfully. Answer: Gordon Hayward's performance on April 3rd, 2024 (OKC @ BOS):
+
+Points: 0
+Rebounds: 2
+Assists: 2
+Steal...
+2025-04-14 19:41:33,828 - INFO - 127.0.0.1 - - [14/Apr/2025 19:41:33] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:41:33,836 - INFO - 127.0.0.1 - - [14/Apr/2025 19:41:33] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:41:33,847 - INFO - 127.0.0.1 - - [14/Apr/2025 19:41:33] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:48:00,305 - INFO - BasketballRAG system initialized
+2025-04-14 19:48:00,322 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:48:00,330 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:48:00,353 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8080
+2025-04-14 19:48:00,353 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-14 19:48:00,368 - INFO -  * Restarting with watchdog (fsevents)
+2025-04-14 19:48:03,289 - INFO - BasketballRAG system initialized
+2025-04-14 19:48:03,300 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv
+2025-04-14 19:48:03,304 - INFO - Successfully loaded 1 unstructured documents
+2025-04-14 19:48:03,315 - WARNING -  * Debugger is active!
+2025-04-14 19:48:03,331 - INFO -  * Debugger PIN: 229-960-101
+2025-04-14 19:52:06,400 - INFO - 127.0.0.1 - - [14/Apr/2025 19:52:06] "GET /?vscodeBrowserReqId=1744685526387 HTTP/1.1" 200 -
+2025-04-14 19:52:06,480 - INFO - 127.0.0.1 - - [14/Apr/2025 19:52:06] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-04-14 19:52:06,570 - INFO - 127.0.0.1 - - [14/Apr/2025 19:52:06] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:52:06,604 - INFO - 127.0.0.1 - - [14/Apr/2025 19:52:06] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:52:33,551 - INFO - Processing query: who had the most points in thunder games 
+2025-04-14 19:52:33,561 - INFO - Query processed successfully. Answer: No data found matching your query. Please try a different question....
+2025-04-14 19:52:33,561 - INFO - 127.0.0.1 - - [14/Apr/2025 19:52:33] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:52:33,566 - INFO - 127.0.0.1 - - [14/Apr/2025 19:52:33] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:52:33,576 - INFO - 127.0.0.1 - - [14/Apr/2025 19:52:33] "GET /stats HTTP/1.1" 200 -
+2025-04-14 19:52:46,142 - INFO - Processing query: show me the OKC team stats from April games
+2025-04-14 19:52:46,150 - INFO - Query processed successfully. Answer: Team game data could not be properly formatted....
+2025-04-14 19:52:46,151 - INFO - 127.0.0.1 - - [14/Apr/2025 19:52:46] "POST /query HTTP/1.1" 200 -
+2025-04-14 19:52:46,155 - INFO - 127.0.0.1 - - [14/Apr/2025 19:52:46] "GET /history HTTP/1.1" 200 -
+2025-04-14 19:52:46,165 - INFO - 127.0.0.1 - - [14/Apr/2025 19:52:46] "GET /stats HTTP/1.1" 200 -
+2025-04-21 14:18:39,513 - INFO - Use pytorch device_name: mps
+2025-04-21 14:18:39,517 - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-04-21 14:18:41,749 - WARNING - Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+2025-04-21 14:18:55,359 - INFO - BasketballRAG system initialized with all-MiniLM-L6-v2 embeddings and gpt-3.5-turbo
+2025-04-21 14:18:55,388 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv with 1181 rows
+2025-04-21 14:19:02,585 - INFO - FAISS index built with 8 chunks and dimension 384
+2025-04-21 14:19:02,589 - INFO - Successfully loaded and chunked 1 documents into 8 chunks
+2025-04-21 14:19:02,598 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.46.119:8080
+2025-04-21 14:19:02,598 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-21 14:19:58,856 - INFO - 172.31.46.119 - - [21/Apr/2025 14:19:58] "GET / HTTP/1.1" 200 -
+2025-04-21 14:19:58,951 - INFO - 172.31.46.119 - - [21/Apr/2025 14:19:58] "[33mGET /static/img/ucla-logo.png HTTP/1.1[0m" 404 -
+2025-04-21 14:19:58,958 - INFO - 172.31.46.119 - - [21/Apr/2025 14:19:58] "GET /static/css/style.css HTTP/1.1" 200 -
+2025-04-21 14:19:59,089 - INFO - 172.31.46.119 - - [21/Apr/2025 14:19:59] "GET /history HTTP/1.1" 200 -
+2025-04-21 14:19:59,093 - INFO - 172.31.46.119 - - [21/Apr/2025 14:19:59] "GET /stats HTTP/1.1" 200 -
+2025-04-21 14:19:59,445 - INFO - 172.31.46.119 - - [21/Apr/2025 14:19:59] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-04-21 14:20:24,339 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-21 14:20:24,370 - INFO - 172.31.46.119 - - [21/Apr/2025 14:20:24] "POST /query HTTP/1.1" 200 -
+2025-04-21 14:20:24,377 - INFO - 172.31.46.119 - - [21/Apr/2025 14:20:24] "GET /history HTTP/1.1" 200 -
+2025-04-21 14:20:24,378 - INFO - 172.31.46.119 - - [21/Apr/2025 14:20:24] "GET /stats HTTP/1.1" 200 -
+2025-04-21 14:25:33,480 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-21 14:25:33,494 - INFO - 172.31.46.119 - - [21/Apr/2025 14:25:33] "POST /query HTTP/1.1" 200 -
+2025-04-21 14:25:33,499 - INFO - 172.31.46.119 - - [21/Apr/2025 14:25:33] "GET /history HTTP/1.1" 200 -
+2025-04-21 14:25:33,500 - INFO - 172.31.46.119 - - [21/Apr/2025 14:25:33] "GET /stats HTTP/1.1" 200 -
+2025-04-21 14:26:17,322 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-21 14:26:17,327 - INFO - 172.31.46.119 - - [21/Apr/2025 14:26:17] "POST /query HTTP/1.1" 200 -
+2025-04-21 14:26:17,333 - INFO - 172.31.46.119 - - [21/Apr/2025 14:26:17] "GET /history HTTP/1.1" 200 -
+2025-04-21 14:26:17,334 - INFO - 172.31.46.119 - - [21/Apr/2025 14:26:17] "GET /stats HTTP/1.1" 200 -
+2025-04-21 19:02:54,539 - INFO - Use pytorch device_name: mps
+2025-04-21 19:02:54,545 - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-04-21 19:02:57,740 - INFO - BasketballRAG system initialized with all-MiniLM-L6-v2 embeddings and gpt-3.5-turbo
+2025-04-21 19:02:57,780 - INFO - Successfully loaded structured data from data/structured/ucla_stats.csv with 1181 rows
+2025-04-21 19:02:59,225 - INFO - FAISS index built with 8 chunks and dimension 384
+2025-04-21 19:02:59,225 - INFO - Successfully loaded and chunked 1 documents into 8 chunks
+2025-04-21 19:02:59,235 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://172.31.46.119:8080
+2025-04-21 19:02:59,235 - INFO - [33mPress CTRL+C to quit[0m
+2025-04-21 19:03:56,001 - INFO - 172.31.46.119 - - [21/Apr/2025 19:03:56] "GET / HTTP/1.1" 200 -
+2025-04-21 19:03:56,090 - INFO - 172.31.46.119 - - [21/Apr/2025 19:03:56] "[33mGET /static/img/ucla-logo.png HTTP/1.1[0m" 404 -
+2025-04-21 19:03:56,126 - INFO - 172.31.46.119 - - [21/Apr/2025 19:03:56] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2025-04-21 19:03:56,194 - INFO - 172.31.46.119 - - [21/Apr/2025 19:03:56] "GET /history HTTP/1.1" 200 -
+2025-04-21 19:03:56,200 - INFO - 172.31.46.119 - - [21/Apr/2025 19:03:56] "GET /stats HTTP/1.1" 200 -
+2025-04-21 19:05:19,190 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-21 19:05:19,219 - INFO - 172.31.46.119 - - [21/Apr/2025 19:05:19] "POST /query HTTP/1.1" 200 -
+2025-04-21 19:05:19,225 - INFO - 172.31.46.119 - - [21/Apr/2025 19:05:19] "GET /stats HTTP/1.1" 200 -
+2025-04-21 19:05:19,226 - INFO - 172.31.46.119 - - [21/Apr/2025 19:05:19] "GET /history HTTP/1.1" 200 -
