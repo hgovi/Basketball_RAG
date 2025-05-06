@@ -1,18 +1,9 @@
 """
-Enhanced Basketball RAG Web Application
+Enhanced Basketball RAG Web Application (Llama Version)
 
 This Flask application provides a web interface for the Enhanced Basketball RAG system,
-allowing users to interact with both structured and unstructured basketball data.
-
-Features:
-- Clean, responsive UI
-- Advanced statistical queries and calculations
-- Real-time query answering
-- Query analysis and visualization
-- History tracking
-- Token usage monitoring
-- Source citation
-- Export capabilities
+allowing users to interact with both structured and unstructured basketball data
+using an open-source Llama model instead of OpenAI.
 """
 
 import os
@@ -22,22 +13,22 @@ from basketball_rag import BasketballRAG
 import pandas as pd
 import argparse
 import json
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('app.log'),
+        logging.StreamHandler()
+    ]
+)
 
 # Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
-
-# Get API key from environment
-api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("OpenAI API key is required. Set OPENAI_API_KEY environment variable.")
-
-# Initialize the RAG system
-rag = BasketballRAG(openai_api_key=api_key)
-
-# Token usage tracking
-total_tokens_used = 0
 
 # Configure app with command line arguments
 def parse_args():
@@ -50,18 +41,38 @@ def parse_args():
                         help='Port to run the Flask application on')
     parser.add_argument('--debug', action='store_true',
                         help='Run in debug mode')
+    parser.add_argument('--model', type=str, default='meta-llama/Llama-2-7b-chat-hf',
+                        help='Hugging Face model name to use')
+    parser.add_argument('--device', type=str, default='cpu',
+                        help='Device to run models on (cpu or cuda)')
     return parser.parse_args()
+
+# Initialize the RAG system
+rag = None
+# Token usage tracking
+total_tokens_used = 0
 
 def load_data(args):
     """Load data into the RAG system"""
+    global rag
+    
+    # Initialize the RAG system with Llama model
+    logging.info(f"Initializing RAG system with model {args.model} on {args.device}")
+    rag = BasketballRAG(
+        llm_model=args.model,
+        device=args.device,
+    )
+    
     # Load structured data
     if os.path.exists(args.structured_data):
+        logging.info(f"Loading structured data from {args.structured_data}")
         rag.load_structured_data(args.structured_data)
     else:
         app.logger.warning(f"Structured data file not found: {args.structured_data}")
     
     # Load unstructured data
     if os.path.exists(args.unstructured_data):
+        logging.info(f"Loading unstructured data from {args.unstructured_data}")
         with open(args.unstructured_data, 'r', encoding='utf-8') as f:
             game_summaries = f.read()
         rag.load_unstructured_data(game_summaries)
@@ -87,7 +98,7 @@ def process_query():
         use_history = data.get('use_history', True)
         
         # Get query analysis
-        query_analysis = rag._decompose_query(query)
+        query_analysis = rag._analyze_query(query)
         
         # Process the query through the RAG system
         answer, tokens_used = rag.answer_query(query, use_history=use_history)
@@ -118,16 +129,10 @@ def analyze_query():
     
     try:
         # Get query analysis
-        query_analysis = rag._decompose_query(query)
-        
-        # Generate SQL if applicable
-        sql_query = ""
-        if query_analysis.get('query_type') in ['calculation', 'comparison', 'filtering'] and rag.sql_engine is not None:
-            sql_query = rag._generate_sql_query(query_analysis)
+        query_analysis = rag._analyze_query(query)
         
         return jsonify({
-            'query_analysis': query_analysis,
-            'sql_query': sql_query
+            'query_analysis': query_analysis
         })
     except Exception as e:
         app.logger.error(f"Error analyzing query: {str(e)}")
@@ -147,10 +152,6 @@ def get_data_preview():
                 'columns': columns,
                 'sample_data': sample_data
             }
-            
-            # Add derived features info if available
-            if hasattr(rag, 'derived_features') and rag.derived_features:
-                data_info['derived_features'] = rag.derived_features
             
             return jsonify(data_info)
         else:
@@ -239,8 +240,6 @@ def get_stats():
     try:
         stats = {
             'games_analyzed': 0,
-            'win_rate': 0,
-            'avg_points': 0,
             'tokens_used': total_tokens_used
         }
         
@@ -257,10 +256,6 @@ def get_stats():
             if 'Points' in df.columns:
                 stats['avg_points'] = df['Points'].mean()
             
-            # Add derived features count
-            if hasattr(rag, 'derived_features'):
-                stats['derived_features_count'] = len(rag.derived_features)
-            
             # Add more advanced stats
             # Points per minute if available
             if 'PTS_PER_MIN' in df.columns:
@@ -269,8 +264,8 @@ def get_stats():
             # Shooting efficiency if available
             if 'FG_PCT' in df.columns:
                 stats['fg_pct'] = df['FG_PCT'].mean() * 100
-            if '3P_PCT' in df.columns:
-                stats['3p_pct'] = df['3P_PCT'].mean() * 100
+            if 'FG3_PCT' in df.columns:
+                stats['3p_pct'] = df['FG3_PCT'].mean() * 100
         
         # Add unstructured data stats
         if hasattr(rag, 'unstructured_chunks') and rag.unstructured_chunks:
@@ -296,11 +291,8 @@ def get_available_calculations():
                 'max': 'Find the maximum value in a column',
                 'median': 'Calculate the median (middle value) of a column',
                 'correlation': 'Calculate the correlation coefficient between two columns',
-                'percentile': 'Calculate a specific percentile of a column',
                 'count_above': 'Count values above a threshold',
                 'count_below': 'Count values below a threshold',
-                'moving_average': 'Calculate moving average over a window',
-                'pct_change': 'Calculate percentage change over periods',
                 'filter_equals': 'Filter data where column equals value',
                 'filter_greater': 'Filter data where column is greater than value',
                 'filter_less': 'Filter data where column is less than value',
@@ -328,6 +320,9 @@ def get_available_calculations():
 def download_history():
     """Save and return the query history as a JSON file"""
     try:
+        # Ensure downloads directory exists
+        os.makedirs('static/downloads', exist_ok=True)
+        
         rag.save_query_history('static/downloads/query_history.json')
         return send_from_directory('static/downloads', 'query_history.json', as_attachment=True)
     except Exception as e:
@@ -340,6 +335,9 @@ def download_data_insights():
     try:
         if rag.structured_data is None:
             return jsonify({'error': 'No structured data available'}), 404
+        
+        # Ensure downloads directory exists
+        os.makedirs('static/downloads', exist_ok=True)
         
         # Generate insights
         df = rag.structured_data
@@ -409,10 +407,6 @@ def main():
     # Log data loading status
     if rag.structured_data is not None:
         app.logger.info(f"Loaded structured data with {len(rag.structured_data)} rows and {len(rag.structured_data.columns)} columns")
-        
-        # Log derived features if available
-        if hasattr(rag, 'derived_features') and rag.derived_features:
-            app.logger.info(f"Generated {len(rag.derived_features)} derived features")
     
     if hasattr(rag, 'unstructured_chunks') and rag.unstructured_chunks:
         app.logger.info(f"Loaded unstructured data with {len(rag.unstructured_chunks)} chunks")

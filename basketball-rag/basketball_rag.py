@@ -1,8 +1,8 @@
 """
-Streamlined Basketball RAG System
+Streamlined Basketball RAG System using Llama
 
-A more efficient approach using embeddings for semantic understanding
-and a flexible architecture for handling various query types.
+A more efficient approach using Llama for LLM processing and embedding models
+for semantic understanding, with simplified architecture for handling various query types.
 """
 
 import os
@@ -12,23 +12,6 @@ import logging
 import json
 from typing import Union, List, Tuple, Dict, Any, Optional
 from datetime import datetime
-try:
-    import faiss
-    FAISS_AVAILABLE = True
-except ImportError:
-    FAISS_AVAILABLE = False
-    logging.warning("FAISS not available. Using numpy for vector search instead.")
-
-# Try to import SentenceTransformer, but provide fallback
-TRANSFORMER_AVAILABLE = False
-try:
-    from sentence_transformers import SentenceTransformer
-    TRANSFORMER_AVAILABLE = True
-except ImportError:
-    logging.warning("SentenceTransformer not available. Using simple text processing instead.")
-
-import tiktoken
-from openai import OpenAI
 from dataclasses import dataclass
 
 # Configure logging
@@ -41,6 +24,32 @@ logging.basicConfig(
     ]
 )
 
+# Try to import sentence-transformers for embeddings
+try:
+    from sentence_transformers import SentenceTransformer
+    TRANSFORMER_AVAILABLE = True
+except ImportError:
+    TRANSFORMER_AVAILABLE = False
+    logging.warning("SentenceTransformer not available. Install with 'pip install sentence-transformers'")
+
+# Try to import FAISS for vector search
+try:
+    import faiss
+    FAISS_AVAILABLE = True
+except ImportError:
+    FAISS_AVAILABLE = False
+    logging.warning("FAISS not available. Install with 'pip install faiss-cpu' or 'pip install faiss-gpu'")
+
+# Hugging Face transformers for Llama model
+try:
+    import torch
+    from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+    HF_AVAILABLE = True
+except ImportError:
+    HF_AVAILABLE = False
+    logging.warning("Hugging Face transformers not available. Install with 'pip install transformers torch'")
+
+
 @dataclass
 class RetrievalResult:
     """Structure for storing retrieval results"""
@@ -48,31 +57,31 @@ class RetrievalResult:
     metadata: Dict[str, Any]
     score: float
 
+
 class BasketballRAG:
-    """Streamlined RAG system for Basketball analytics"""
+    """Streamlined RAG system for Basketball analytics using Llama"""
     
     def __init__(
-        self, 
-        openai_api_key: Optional[str] = None,
-        embedding_model: str = "all-MiniLM-L6-v2",
-        llm_model: str = "gpt-3.5-turbo"
-    ):
-        """Initialize the RAG system with models and data structures"""
-        # API key setup
-        self.openai_api_key = openai_api_key or os.getenv("OPENAI_API_KEY")
-        if not self.openai_api_key:
-            raise ValueError("OpenAI API key is required")
+            self, 
+            llm_model: str = "meta-llama/Llama-2-7b-chat-hf",
+            embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2",
+            device: str = "cpu",
+            context_window: int = 4096,
+            max_new_tokens: int = 512
+        ):
+        """Initialize the RAG system with models and data structures
         
-        # Validate API key format
-        if not self.openai_api_key.startswith(('sk-', 'org-')):
-            logging.warning("API key format may be invalid. Check your API key.")
-        
-        # Initialize OpenAI client with retry settings
-        self.client = OpenAI(
-            api_key=self.openai_api_key,
-            max_retries=5,  # Increase retries for rate limiting
-            timeout=60.0    # Increase timeout
-        )
+        Args:
+            llm_model: Name of the Hugging Face model to use
+            embedding_model: Name of the embedding model for semantic search
+            device: Device to run models on ("cpu" or "cuda")
+            context_window: Maximum context window size for the LLM
+            max_new_tokens: Maximum number of tokens to generate in responses
+        """
+        self.device = device
+        self.context_window = context_window
+        self.max_new_tokens = max_new_tokens
+        self.llm_model = llm_model  # Store the model name
         
         # Initialize data containers
         self.structured_data = None
@@ -80,10 +89,11 @@ class BasketballRAG:
         self.unstructured_chunks = []
         self.unstructured_metadata = []
         
-        # Load embedding model if available
+        # Load embedding model
         if TRANSFORMER_AVAILABLE:
             try:
                 self.embedding_model = SentenceTransformer(embedding_model)
+                self.embedding_model.to(device)
                 logging.info(f"Loaded embedding model: {embedding_model}")
             except Exception as e:
                 logging.error(f"Error loading embedding model: {str(e)}")
@@ -92,26 +102,50 @@ class BasketballRAG:
             self.embedding_model = None
             logging.warning("No embedding model available. Unstructured data search will be limited.")
         
+        # Load LLM
+        if HF_AVAILABLE:
+            try:
+                self.tokenizer = AutoTokenizer.from_pretrained(llm_model)
+                if device == "cpu" or not torch.cuda.is_available():
+                    # Use standard loading without quantization for CPU
+                    self.model = AutoModelForCausalLM.from_pretrained(
+                        llm_model, 
+                        torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
+                        device_map=device,
+                        # Removed quantization for compatibility
+                    )
+                else:
+                    self.model = AutoModelForCausalLM.from_pretrained(
+                        llm_model,
+                        torch_dtype=torch.float16,
+                        device_map=device
+                    )
+                
+                self.llm_pipeline = pipeline(
+                    "text-generation",
+                    model=self.model,
+                    tokenizer=self.tokenizer,
+                    max_new_tokens=max_new_tokens,
+                    temperature=0.7,
+                    top_p=0.9,
+                    repetition_penalty=1.2,
+                    pad_token_id=self.tokenizer.eos_token_id
+                )
+                logging.info(f"Loaded LLM: {llm_model}")
+            except Exception as e:
+                logging.error(f"Error loading LLM: {str(e)}")
+                raise RuntimeError(f"Failed to load LLM model: {str(e)}")
+        else:
+            raise ImportError("Hugging Face transformers is required for this RAG system.")
+        
         # Initialize FAISS index
         self.faiss_index = None
-        
-        # Set LLM model
-        self.llm_model = llm_model
-        
-        # Initialize tokenizer for token counting
-        try:
-            self.tokenizer = tiktoken.encoding_for_model(llm_model) if "gpt" in llm_model else None
-        except:
-            self.tokenizer = None
-            logging.warning("Tokenizer not available. Token counting will be estimated.")
         
         # History tracking
         self.query_history = []
         self.chat_history = []
         
-        # For compatibility with existing codebase
-        self.derived_features = []
-        self.sql_engine = None
+        # Statistical functions
         self.stat_functions = {
             'average': lambda df, col: df[col].mean(),
             'sum': lambda df, col: df[col].sum(),
@@ -119,11 +153,8 @@ class BasketballRAG:
             'max': lambda df, col: df[col].max(),
             'median': lambda df, col: df[col].median(),
             'correlation': lambda df, col1, col2: df[col1].corr(df[col2]),
-            'percentile': lambda df, col, p: df[col].quantile(p/100),
             'count_above': lambda df, col, val: (df[col] > val).sum(),
             'count_below': lambda df, col, val: (df[col] < val).sum(),
-            'moving_average': lambda df, col, window: df[col].rolling(window=window).mean(),
-            'pct_change': lambda df, col: df[col].pct_change(),
             'filter_equals': lambda df, col, val: df[df[col] == val],
             'filter_greater': lambda df, col, val: df[df[col] > val],
             'filter_less': lambda df, col, val: df[df[col] < val],
@@ -132,15 +163,73 @@ class BasketballRAG:
             'group_sum': lambda df, group_col, val_col: df.groupby(group_col)[val_col].sum(),
         }
         
-        logging.info(f"BasketballRAG initialized with model {llm_model}")
-    
-    def _count_tokens(self, text: str) -> int:
-        """Count tokens for a given text using the appropriate tokenizer"""
-        if self.tokenizer:
-            return len(self.tokenizer.encode(text))
-        else:
-            # Rough estimation
-            return len(text) // 4
+        logging.info("BasketballRAG initialized successfully")
+
+    def count_tokens(self, text: str) -> int:
+        """Count tokens for a given text using the LLM tokenizer"""
+        return len(self.tokenizer.encode(text))
+
+    def generate_text(self, prompt: str) -> str:
+        """Generate text using the LLM"""
+        # Check if prompt is too long
+        if self.count_tokens(prompt) > self.context_window:
+            logging.warning(f"Prompt exceeds context window ({self.count_tokens(prompt)} > {self.context_window})")
+            # Truncate prompt to fit context window
+            prompt = self.tokenizer.decode(
+                self.tokenizer.encode(prompt)[:self.context_window - self.max_new_tokens - 10]
+            )
+        
+        try:
+            # Format prompt based on model type
+            model_name = self.llm_model.lower()
+            
+            if "llama-2" in model_name:
+                formatted_prompt = f"""<s>[INST] {prompt} [/INST]"""
+            elif "tinyllama" in model_name:
+                formatted_prompt = f"""<|system|>
+You are a basketball analytics assistant that provides insights based on given data.
+{prompt}"""
+            elif "mistral" in model_name:
+                formatted_prompt = f"""<s>[INST] {prompt} [/INST]"""
+            else:
+                # Default format for other models
+                formatted_prompt = prompt
+            
+            # Generate text
+            try:
+                response = self.llm_pipeline(
+                    formatted_prompt,
+                    do_sample=True,
+                    temperature=0.7,
+                    max_new_tokens=self.max_new_tokens,
+                    top_p=0.9,
+                    repetition_penalty=1.2,
+                    pad_token_id=self.tokenizer.eos_token_id
+                )
+                
+                # Extract text from response
+                output_text = response[0]['generated_text']
+                
+                # Remove the prompt from the output
+                output_text = output_text.replace(formatted_prompt, "").strip()
+                
+                # For TinyLlama, extract the user response part
+                if "tinyllama" in model_name:
+                    # Look for the <|assistant|> tag
+                    if "<|assistant|>" in output_text:
+                        output_text = output_text.split("<|assistant|>")[1].strip()
+                        # Remove any trailing tags
+                        if "<|" in output_text:
+                            output_text = output_text.split("<|")[0].strip()
+                
+                return output_text
+            except IndexError:
+                # Handle index errors which can happen with some models
+                return "Based on the data provided, I cannot give a specific answer to this question."
+        
+        except Exception as e:
+            logging.error(f"Error generating text: {str(e)}")
+            return f"Error generating response: {str(e)}"
 
     def load_structured_data(self, file_path: str) -> None:
         """Load structured data from CSV or Excel file"""
@@ -260,8 +349,7 @@ class BasketballRAG:
             if end >= len(text):
                 end = len(text)
             else:
-                # Find a good breakpoint
-                # Try to break at paragraph, then sentence, then word
+                # Find a good breakpoint (paragraph, sentence, or word)
                 for separator in ["\n\n", ".", " "]:
                     last_sep = text.rfind(separator, start, end)
                     if last_sep != -1 and last_sep > start + (chunk_size // 3):
@@ -302,8 +390,7 @@ class BasketballRAG:
                     convert_to_numpy=True
                 )
             else:
-                # Simple text processing if embedding model is not available
-                embeddings = np.array([np.array([ord(c) for c in chunk]) for chunk in self.unstructured_chunks])
+                return
             
             # Create FAISS index
             if FAISS_AVAILABLE:
@@ -333,7 +420,7 @@ class BasketballRAG:
             results.extend(struct_results)
         
         # Get unstructured data insights
-        if self.unstructured_chunks and self.faiss_index is not None:
+        if self.unstructured_chunks and self.embedding_model is not None:
             unstruct_results = self._retrieve_unstructured(query, top_k)
             results.extend(unstruct_results)
         
@@ -344,61 +431,15 @@ class BasketballRAG:
         return results[:top_k]
 
     def _retrieve_structured_insights(self, query: str) -> List[RetrievalResult]:
-        """Get relevant insights from structured data"""
+        """Get relevant insights from structured data using simple analysis"""
         results = []
         
         if self.structured_data is None or self.structured_data.empty:
             return results
         
         try:
-            # First try direct data analysis without API call
-            insights = self._simple_data_analysis(query)
-            
-            # Only use API if simple analysis doesn't yield good results
-            if insights.get('operation_type') == 'summary' and not insights.get('filters'):
-                try:
-                    # Use LLM to determine what kind of information might be useful
-                    insights_prompt = f"""
-                    I have structured basketball data with these columns: {', '.join(self.structured_data.columns)}
-                    
-                    For the query: "{query}"
-                    
-                    What insights or statistics would be most relevant? Provide your answer as a JSON object with these fields:
-                    - relevant_columns: List of columns that are most relevant
-                    - operation_type: One of "summary", "filtering", "comparison", "time_series", "specific_game"
-                    - filters: Any filters to apply (column:value pairs)
-                    - aggregations: Any aggregations to perform (mean, sum, etc.)
-                    
-                    Keep it concise and only include the JSON.
-                    """
-                    
-                    response = self.client.chat.completions.create(
-                        model=self.llm_model,
-                        messages=[
-                            {"role": "system", "content": "You are a data analysis assistant that returns only valid JSON."},
-                            {"role": "user", "content": insights_prompt}
-                        ],
-                        temperature=0.1,
-                        max_tokens=250
-                    )
-                    
-                    # Parse the response
-                    import re
-                    import json
-                    
-                    response_text = response.choices[0].message.content
-                    # Extract JSON if it's embedded in explanatory text
-                    json_match = re.search(r'({.*})', response_text.replace('\n', ' '), re.DOTALL)
-                    
-                    if json_match:
-                        try:
-                            insights = json.loads(json_match.group(1))
-                        except:
-                            # Keep the simple analysis results
-                            pass
-                except Exception as api_error:
-                    logging.warning(f"API call failed in structured insights: {str(api_error)}")
-                    # Continue with simple analysis results
+            # Use a simple data analysis approach based on query keywords
+            insights = self._analyze_query(query)
             
             # Apply the insights to get relevant data
             df = self.structured_data
@@ -412,21 +453,24 @@ class BasketballRAG:
                         else:
                             df = df[df[col] == val]
             
-            # Get relevant columns
-            columns = insights.get('relevant_columns', df.columns[:5].tolist())
+            # Select relevant columns
+            columns = insights.get('relevant_columns', df.columns.tolist()[:5])
             
-            # Prepare the content based on operation type
-            operation = insights.get('operation_type', 'summary')
+            # Generate content based on query type
+            operation = insights.get('query_type', 'summary')
             
             if operation == 'summary':
                 # General summary statistics
-                if all(col in df.columns for col in columns):
-                    summary = df[columns].describe().to_string()
-                    results.append(RetrievalResult(
-                        content=f"Summary statistics for {', '.join(columns)}:\n{summary}",
-                        metadata={"source": "structured", "operation": "summary"},
-                        score=0.8
-                    ))
+                if len(df) > 0:
+                    numeric_cols = df[columns].select_dtypes(include=['number']).columns
+                    if not numeric_cols.empty:
+                        summary = df[numeric_cols].agg(['mean', 'min', 'max']).round(2)
+                        summary_str = summary.to_string()
+                        results.append(RetrievalResult(
+                            content=f"Summary statistics for numeric columns:\n{summary_str}",
+                            metadata={"source": "structured", "operation": "summary"},
+                            score=0.8
+                        ))
             
             elif operation == 'filtering':
                 # Filtered data
@@ -486,106 +530,102 @@ class BasketballRAG:
             
         except Exception as e:
             logging.error(f"Error retrieving structured insights: {str(e)}")
-            # Fallback to simple approach
-            return self._simple_structured_retrieval(query)
+            return []
 
-    def _simple_data_analysis(self, query: str) -> Dict:
-        """Simple heuristic-based data analysis when LLM approach fails"""
-        query = query.lower()
+    def _analyze_query(self, query: str) -> Dict[str, Any]:
+        """Analyze the query to determine the type of information needed"""
+        query_lower = query.lower()
         
-        # Default analysis
+        # Initialize analysis with defaults
         analysis = {
-            'relevant_columns': self.structured_data.columns[:5].tolist(),
-            'operation_type': 'summary',
-            'filters': {}
+            'query_type': 'summary',
+            'relevant_columns': [],
+            'filters': {},
+            'entities': []
         }
         
-        # Look for specific teams in the query
-        if 'boston' in query or 'bos' in query:
-            analysis['filters']['Opponent'] = 'BOS'
-            analysis['operation_type'] = 'specific_game'
-        elif 'lakers' in query or 'lal' in query:
-            analysis['filters']['Opponent'] = 'LAL'
-            analysis['operation_type'] = 'specific_game'
+        # Determine query type based on keywords
+        if any(word in query_lower for word in ['average', 'mean', 'avg', 'calculate', 'what is the']):
+            analysis['query_type'] = 'calculation'
+        elif any(word in query_lower for word in ['compare', 'vs', 'versus', 'difference', 'better']):
+            analysis['query_type'] = 'comparison'
+        elif any(word in query_lower for word in ['list', 'show', 'find', 'filter', 'when', 'which games']):
+            analysis['query_type'] = 'filtering'
+        elif any(word in query_lower for word in ['what happened', 'tell me about', 'details']):
+            analysis['query_type'] = 'specific_game'
         
-        # Look for comparison indicators
-        if 'compare' in query or 'vs' in query or 'versus' in query:
-            analysis['operation_type'] = 'comparison'
+        # Identify relevant columns
+        stat_terms = {
+            'Points': ['points', 'score', 'scoring', 'pts'],
+            'Assists': ['assists', 'passing', 'pass', 'ast'],
+            'Rebounds': ['rebounds', 'rebound', 'boards', 'reb'],
+            'Steals': ['steals', 'steal', 'stl'],
+            'Blocks': ['blocks', 'block', 'blk'],
+            'FG_PCT': ['shooting', 'field goal', 'fg', 'shooting percentage'],
+            'FG3_PCT': ['three', '3-point', '3pt', 'three point', '3-pointer']
+        }
         
-        # Look for specific game indicators
-        if 'game against' in query or 'match against' in query:
-            analysis['operation_type'] = 'specific_game'
+        # Add relevant columns based on query terms
+        for col, terms in stat_terms.items():
+            if any(term in query_lower for term in terms):
+                analysis['relevant_columns'].append(col)
+        
+        # If no specific columns identified, use basic ones
+        if not analysis['relevant_columns']:
+            basic_cols = ['Game', 'Matchup', 'Points', 'Rebounds', 'Assists']
+            analysis['relevant_columns'] = [col for col in basic_cols if col in self.structured_data.columns]
+        
+        # Look for team names
+        teams = {
+            'BOS': ['boston', 'celtics'],
+            'LAL': ['lakers', 'la lakers', 'los angeles lakers'],
+            'GSW': ['warriors', 'golden state'],
+            'CHI': ['bulls', 'chicago'],
+            'MIA': ['heat', 'miami'],
+            'NYK': ['knicks', 'new york'],
+            'OKC': ['thunder', 'okc', 'oklahoma']
+        }
+        
+        for team_code, team_names in teams.items():
+            if any(team in query_lower for team in team_names):
+                analysis['filters']['Opponent'] = team_code
+                analysis['entities'].append(team_code)
+        
+        # Look for player names if they exist in data
+        if 'Player' in self.structured_data.columns:
+            player_list = self.structured_data['Player'].unique()
+            for player in player_list:
+                if player.lower() in query_lower:
+                    analysis['filters']['Player'] = player
+                    analysis['entities'].append(player)
         
         return analysis
-
-    def _simple_structured_retrieval(self, query: str) -> List[RetrievalResult]:
-        """Simple fallback retrieval from structured data"""
-        results = []
-        
-        if self.structured_data is None or self.structured_data.empty:
-            return results
-        
-        # Get a general summary
-        columns_summary = ", ".join(self.structured_data.columns.tolist())
-        
-        results.append(RetrievalResult(
-            content=f"Data contains {len(self.structured_data)} rows with columns: {columns_summary}",
-            metadata={"source": "structured", "operation": "fallback_summary"},
-            score=0.5
-        ))
-        
-        # If query mentions specific teams, try to find those games
-        query_lower = query.lower()
-        if 'boston' in query_lower or 'bos' in query_lower:
-            team = 'BOS'
-        elif 'lakers' in query_lower or 'lal' in query_lower:
-            team = 'LAL'
-        else:
-            team = None
-            
-        if team and 'Opponent' in self.structured_data.columns:
-            team_games = self.structured_data[self.structured_data['Opponent'] == team]
-            if not team_games.empty:
-                team_summary = team_games.head(3).to_string()
-                results.append(RetrievalResult(
-                    content=f"Games against {team}:\n{team_summary}",
-                    metadata={"source": "structured", "operation": "team_filter"},
-                    score=0.7
-                ))
-        
-        return results
 
     def _retrieve_unstructured(self, query: str, top_k: int = 3) -> List[RetrievalResult]:
         """Retrieve relevant chunks from unstructured data"""
         results = []
         
-        if not self.unstructured_chunks or self.faiss_index is None:
+        if not self.unstructured_chunks or self.embedding_model is None:
             return results
-            
+        
         try:
             # Encode the query
-            if self.embedding_model:
-                query_embedding = self.embedding_model.encode([query])
-                query_embedding = np.array(query_embedding).astype("float32")
-            else:
-                # Simple text processing if embedding model is not available
-                query_embedding = np.array([np.array([ord(c) for c in query])])
-            
-            # Normalize embedding
-            if FAISS_AVAILABLE:
-                faiss.normalize_L2(query_embedding)
-            else:
-                # Normalize using numpy if FAISS is not available
-                query_embedding = query_embedding / np.linalg.norm(query_embedding, axis=1, keepdims=True)
+            query_embedding = self.embedding_model.encode([query])
+            query_embedding = np.array(query_embedding).astype("float32")
             
             # Search the index
-            if FAISS_AVAILABLE:
+            if FAISS_AVAILABLE and self.faiss_index is not None:
+                # Normalize the query embedding
+                faiss.normalize_L2(query_embedding)
+                
+                # Perform the search
                 scores, indices = self.faiss_index.search(query_embedding, min(top_k, len(self.unstructured_chunks)))
                 indices = indices[0]  # Get the first result row
                 scores = scores[0]    # Get the first result row
             else:
-                # Use numpy for vector search if FAISS is not available
-                scores = np.dot(self.faiss_index, query_embedding.T).flatten()
+                # Use numpy for vector search
+                embeddings = self.faiss_index
+                scores = np.dot(embeddings, query_embedding.T).flatten()
                 indices = np.argsort(-scores)[:top_k]
                 scores = scores[indices]
             
@@ -625,7 +665,7 @@ class BasketballRAG:
             
             if not retrieval_results:
                 answer = "I don't have enough information to answer that question."
-                tokens_used = self._count_tokens(answer)
+                tokens_used = self.count_tokens(answer)
                 return answer, tokens_used
             
             # Prepare context from retrieval results
@@ -637,57 +677,37 @@ class BasketballRAG:
             # Add chat history if needed
             history_context = ""
             if use_history and self.chat_history:
-                recent_history = self.chat_history[-3:]
+                recent_history = self.chat_history[-3:]  # Last 3 exchanges
                 history_context = "\n".join([
                     f"User: {exchange['user']}\nAssistant: {exchange['assistant']}"
                     for exchange in recent_history
                 ])
                 history_context = "Previous conversation:\n" + history_context + "\n\n"
             
-            # Prepare system prompt
-            system_prompt = """
-            You are a basketball analytics assistant that provides insights based on the given data.
-            Answer the question based on the provided context.
-            For each fact in your answer, reference the source number in [brackets].
-            If the information isn't in the context, say you don't have that information.
-            Be concise, accurate, and helpful.
-            """
+            # Prepare prompt for the LLM
+            prompt = f"""You are a basketball analytics assistant that provides insights based on given data.
             
-            # Create user prompt with context
-            user_prompt = f"{history_context}Context:\n{context}\n\nQuestion: {query}"
+{history_context}
+
+Here is the information I have about basketball data:
+
+{context}
+
+Question: {query}
+
+Please answer the question based on the provided information. For each fact in your answer, reference the source number in [brackets]. If the information isn't in the context, say you don't have that information. Be concise, accurate, and helpful.
+"""
             
-            try:
-                # Generate the answer using OpenAI
-                response = self.client.chat.completions.create(
-                    model=self.llm_model,
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_prompt}
-                    ],
-                    temperature=0.3,
-                    max_tokens=500
-                )
-                
-                answer = response.choices[0].message.content
-            except Exception as api_error:
-                # Handle API errors (like rate limiting or quota exceeded)
-                logging.error(f"OpenAI API error: {str(api_error)}")
-                
-                # Provide a fallback response based on the retrieved information
-                answer = f"I encountered an API error, but here's what I found in my database:\n\n"
-                for i, result in enumerate(retrieval_results[:3]):
-                    answer += f"[{i+1}] {result.content[:200]}...\n\n"
-                answer += "\nFor more detailed analysis, please try again later."
+            # Generate the answer
+            answer = self.generate_text(prompt)
             
-            # Calculate tokens used
-            prompt_tokens = self._count_tokens(system_prompt) + self._count_tokens(user_prompt)
-            completion_tokens = self._count_tokens(answer)
-            total_tokens = prompt_tokens + completion_tokens
+            # Calculate tokens used (prompt + response)
+            tokens_used = self.count_tokens(prompt) + self.count_tokens(answer)
             
             # Update chat history
             self.chat_history.append({"user": query, "assistant": answer})
             
-            return answer, total_tokens
+            return answer, tokens_used
             
         except Exception as e:
             logging.error(f"Error answering query: {str(e)}")
@@ -701,6 +721,11 @@ class BasketballRAG:
         """Return the chat history"""
         return self.chat_history
 
+    def clear_chat_history(self) -> None:
+        """Clear the chat history while preserving query history"""
+        self.chat_history = []
+        logging.info("Chat history cleared")
+
     def save_query_history(self, file_path: str = "query_history.json") -> None:
         """Save the query history to a JSON file"""
         try:
@@ -710,73 +735,3 @@ class BasketballRAG:
         except Exception as e:
             logging.error(f"Error saving query history: {str(e)}")
             raise
-
-    def clear_chat_history(self) -> None:
-        """Clear the chat history while preserving query history"""
-        self.chat_history = []
-        logging.info("Chat history cleared")
-
-    def _decompose_query(self, query: str) -> Dict[str, Any]:
-        """Minimal query analysis for compatibility with app.py"""
-        query_lower = query.lower()
-        
-        # Default analysis
-        analysis = {
-            'query_type': 'factual',
-            'required_fields': [],
-            'filters': {},
-            'time_period': None,
-            'entities': []
-        }
-        
-        # Simple heuristic detection without API call
-        if any(term in query_lower for term in ['average', 'mean', 'sum', 'total']):
-            analysis['query_type'] = 'calculation'
-            
-            # Try to identify relevant fields
-            stat_terms = {
-                'points': ['points', 'score', 'scoring'],
-                'assists': ['assists', 'passing', 'pass'],
-                'rebounds': ['rebounds', 'rebound', 'boards'],
-                'steals': ['steals', 'steal'],
-                'blocks': ['blocks', 'block'],
-                'fieldGoalsPercentage': ['shooting', 'field goal', 'fg'],
-                'threePointersPercentage': ['three', '3-point', '3pt']
-            }
-            
-            for field, terms in stat_terms.items():
-                if any(term in query_lower for term in terms):
-                    analysis['required_fields'].append(field)
-            
-        elif any(term in query_lower for term in ['compare', 'vs', 'versus']):
-            analysis['query_type'] = 'comparison'
-            
-            # Try to identify comparison entities
-            if 'home' in query_lower and 'away' in query_lower:
-                analysis['entities'] = ['Home', 'Away']
-                
-        elif any(term in query_lower for term in ['filter', 'where', 'when']):
-            analysis['query_type'] = 'filtering'
-            
-            # Try to identify time periods
-            time_periods = ['january', 'february', 'march', 'april', 'may', 'june',
-                           'july', 'august', 'september', 'october', 'november', 'december']
-            for period in time_periods:
-                if period in query_lower:
-                    analysis['time_period'] = period.capitalize()
-        
-        # Extract entities (teams)
-        teams = ['boston', 'celtics', 'lakers', 'warriors', 'bulls', 'heat', 'knicks', 'okc', 'thunder']
-        for team in teams:
-            if team in query_lower:
-                analysis['entities'].append(team.capitalize())
-                
-                # Add filter for team
-                if 'Opponent' in analysis.get('filters', {}):
-                    analysis['filters']['Opponent'] = team.upper()
-        
-        return analysis
-    
-    def _generate_sql_query(self, query_analysis: Dict[str, Any]) -> str:
-        """Minimal SQL generation for compatibility with app.py"""
-        return ""

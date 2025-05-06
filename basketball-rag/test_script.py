@@ -1,50 +1,43 @@
 """
-Test script for the streamlined BasketballRAG system
+Simple test script for the Basketball RAG system with Llama
 """
 
 import os
+import sys
 from dotenv import load_dotenv
 from basketball_rag import BasketballRAG
 
 # Load environment variables
 load_dotenv()
 
-# Get API key
-api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("OpenAI API key is required. Set OPENAI_API_KEY environment variable.")
-
 def main():
     # Initialize the RAG system
-    print("\nInitializing Basketball RAG System...")
-    rag = BasketballRAG(openai_api_key=api_key)
+    print("\nInitializing Basketball RAG System with open-access model...")
+    try:
+        # Use an open-access model that doesn't require authentication
+        rag = BasketballRAG(
+            llm_model="mistralai/Mistral-7B-Instruct-v0.2",  # Better open-access model
+            device="cpu"
+        )
+        print("BasketballRAG initialized successfully")
+    except Exception as e:
+        print(f"Error initializing BasketballRAG: {str(e)}")
+        sys.exit(1)
     
     # Load structured data
-    data_path = '../test/clean_oneseason.csv'  # Updated path to existing test data
+    data_path = '../test/clean_oneseason.csv'
     print(f"\nLoading structured data from {data_path}...")
-    rag.load_structured_data(data_path)
-    
-    # Display data info
-    print(f"\nLoaded {len(rag.structured_data)} games with {len(rag.structured_data.columns)} columns")
-    print(f"Columns: {rag.structured_data.columns.tolist()}")
-    
-    # Optional: Load unstructured data if available
     try:
-        text_path = 'data/game_summaries.txt'  # Update with your actual path
-        if os.path.exists(text_path):
-            print(f"\nLoading unstructured data from {text_path}...")
-            with open(text_path, 'r', encoding='utf-8') as f:
-                game_summaries = f.read()
-            rag.load_unstructured_data(game_summaries)
-    except:
-        print("No unstructured data loaded")
+        rag.load_structured_data(data_path)
+        print(f"Loaded {len(rag.structured_data)} games with {len(rag.structured_data.columns)} columns")
+    except Exception as e:
+        print(f"Error loading structured data: {str(e)}")
+        sys.exit(1)
     
     # Test basic queries
     test_queries = [
         "How many home games did OKC play?",
-        "List the games against Houston this season",
-        "When did OKC play against Dallas?",
-        "Show me the statistics for games in March"
+        "List the games against Houston this season"
     ]
     
     print("\n=== Testing Basic Queries ===")
@@ -53,10 +46,12 @@ def main():
         print("-" * 50)
         
         # Process query
-        answer, tokens = rag.answer_query(query)
-        
-        print(f"Answer: {answer}")
-        print(f"Tokens used: {tokens}")
+        try:
+            answer, tokens = rag.answer_query(query)
+            print(f"Answer: {answer}")
+            print(f"Tokens used: {tokens}")
+        except Exception as e:
+            print(f"Error processing query: {str(e)}")
         print("-" * 50)
     
     print("\nTest completed!")

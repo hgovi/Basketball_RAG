@@ -1,60 +1,84 @@
-# UCLA Women's Basketball RAG System
+# Basketball RAG System with Llama
 
-This is a Retrieval-Augmented Generation (RAG) system designed to answer questions about the UCLA Women's Basketball Team using both structured and unstructured data.
+A Retrieval-Augmented Generation (RAG) system for basketball data using Llama models locally instead of OpenAI's API.
 
 ## Setup
 
-1. Install the required dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Set up your OpenAI API key:
+## Usage
+
+### Initialize the system
+
 ```python
 from basketball_rag import BasketballRAG
 
-# Initialize the system with your OpenAI API key
-rag = BasketballRAG(openai_api_key="your-api-key-here")
+rag = BasketballRAG(
+    llm_model="meta-llama/Llama-2-7b-chat-hf",
+    device="cpu"  # Use "cuda" for GPU
+)
 ```
 
-## Usage
+### Load data
 
-### Loading Data
-
-1. For structured data (CSV/Excel):
 ```python
-rag.load_structured_data("path/to/your/data.csv")  # or .xlsx
-```
+# Load structured data (CSV/Excel)
+rag.load_structured_data("path/to/data.csv")
 
-2. For unstructured data (text):
-```python
-# Single text
+# Load unstructured data (text)
 rag.load_unstructured_data("Game summary text...")
-
-# Multiple texts
-rag.load_unstructured_data(["Game summary 1", "Game summary 2", ...])
 ```
 
-### Asking Questions
+### Ask questions
 
 ```python
-# Ask questions about statistics
-answer = rag.answer_query("What are the team's average points per game?")
-
-# Ask questions about game summaries
-answer = rag.answer_query("What happened in the last game against USC?")
+# Query the system
+answer, tokens_used = rag.answer_query("What are the team's average points per game?")
+print(answer)
 ```
 
-## Features
+## Model Options
 
-- Handles both structured (statistical) and unstructured (narrative) data
-- Automatically determines the best way to answer each query
-- Uses semantic search for text-based queries
-- Provides concise, accurate answers based on available data
-- Optimized for low token usage while maintaining accuracy
+### Gated Models (Require Authentication)
+- `meta-llama/Llama-2-7b-chat-hf` (requires Hugging Face account & approval)
+- `meta-llama/Llama-2-13b-chat-hf` (requires Hugging Face account & approval)
 
-## Notes
+### Open-Access Models (No Authentication Required)
+- `TinyLlama/TinyLlama-1.1B-Chat-v1.0` (small, fast, no login needed)
+- `facebook/opt-350m` (very small model for testing)
+- `mistralai/Mistral-7B-Instruct-v0.2` (good performance, freely available)
 
-- The system will return "Insufficient data to answer accurately" if it cannot find relevant information
-- For best results, provide both structured and unstructured data
-- Structured queries work best with statistical keywords (stats, average, total, etc.) 
+## Authentication
+
+To use gated models like Llama-2:
+
+1. Create a Hugging Face account at [huggingface.co](https://huggingface.co/join)
+2. Request access to Llama 2 at [meta-llama/Llama-2-7b-chat-hf](https://huggingface.co/meta-llama/Llama-2-7b-chat-hf)
+3. Log in via CLI:
+   ```bash
+   pip install huggingface_hub
+   huggingface-cli login
+   ```
+
+## Running the demo
+
+```bash
+# Interactive mode
+python demo.py --interactive
+
+# With specific options
+python demo.py --model="meta-llama/Llama-2-7b-chat-hf" --device="cuda"
+```
+
+## Web application
+
+```bash
+python app.py --port=8080 --model="meta-llama/Llama-2-7b-chat-hf"
+```
+
+## Testing
+
+```bash
+python test_script.py
