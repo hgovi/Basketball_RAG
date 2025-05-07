@@ -13,8 +13,8 @@ import tqdm
 import json
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ASTRA_DB_API_ENDPOINT = "https://7e2ba2fe-f9f8-46d9-aa15-e9c5cd0de2fb-us-east-2.apps.astra.datastax.com"
-ASTRA_DB_APPLICATION_TOKEN = "AstraCS:ppEeSMtFwMrBJIoHuZJoRORS:ae5ad885babeb0a75c58936812b37d59a4b223a1c07d5e75887baaec122cb16d"
+ASTRA_DB_API_ENDPOINT = "" #insert endpoint
+ASTRA_DB_APPLICATION_TOKEN = "" #insert token
 
 def find_metadata(query, llm):
     prompt = (
