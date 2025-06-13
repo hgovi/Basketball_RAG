@@ -1,0 +1,39 @@
+# Web Framework
+Flask==3.0.0
+Werkzeug==3.0.1
+
+# Database
+# sqlite3-fts4 is built into Python's standard library
+
+# AI/ML Stack
+anthropic==0.21.3
+langchain==0.1.0
+langchain-community==0.0.13
+langchain-anthropic==0.1.4
+sentence-transformers==2.7.0
+torch==2.3.0
+transformers==4.41.2
+
+# Data Processing
+pandas==2.2.2
+numpy==1.26.4
+
+# Text Processing
+thefuzz==0.22.1
+# Using rapidfuzz instead of python-Levenshtein for better Python 3.12 compatibility
+rapidfuzz==3.13.0
+
+# Environment Management
+python-dotenv==1.0.1
+
+# Development Tools
+pytest==8.2.1
+pytest-flask==1.3.0
+black==24.4.2
+flake8==7.0.0
+
+# Production Server
+gunicorn==22.0.0
+
+# Monitoring & Logging
+python-json-logger==2.0.7
